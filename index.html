@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>푸망형 테스트 홈</title>
+
+  <!-- ✅ Open Graph (공유용) - 실제 배포 시 url/image 수정 -->
+  <meta property="og:title" content="오늘의 테스트" />
+  <meta property="og:description" content="가볍게 해보는 푸망형 심리/밈 테스트" />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a2e;
+      --card2:#0d1730;
+      --text:#e8eefc;
+      --muted:#a9b6d3;
+      --line:rgba(255,255,255,.08);
+      --accent:#3b82f6;  /* 파랑 */
+      --accent2:#22c55e; /* 초록 */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(900px 500px at 20% 0%, rgba(59,130,246,.18), transparent 55%),
+        radial-gradient(800px 500px at 90% 10%, rgba(34,197,94,.14), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Layout */
+    .app{
+      max-width: 520px;
+      margin:0 auto;
+      min-height:100%;
+      padding-bottom: 92px; /* bottom bar space */
+    }
+
+    /* Top Header */
+    .topbar{
+      position: sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner{
+      padding: 14px 16px 10px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+    .mark{
+      width:40px;
+      height:40px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(59,130,246,.9), rgba(34,197,94,.8));
+      box-shadow: 0 10px 24px rgba(59,130,246,.18);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      color:#081024;
+      letter-spacing:-0.5px;
+    }
+    .brand-text{
+      min-width:0;
+    }
+    .brand-title{
+      margin:0;
+      font-size: 16px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-sub{
+      margin:2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip:active{ transform: translateY(1px); }
+
+    /* Search */
+    .search{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .searchbox{
+      flex:1;
+      position:relative;
+    }
+    .searchbox input{
+      width:100%;
+      padding: 12px 12px 12px 40px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      outline:none;
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-size: 14px;
+    }
+    .searchbox input::placeholder{ color: rgba(232,238,252,.55); }
+    .icon{
+      position:absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      opacity:.8;
+    }
+
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 14px;
+      font-size: 14px;
+      cursor:pointer;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    /* Content */
+    .content{ padding: 14px 16px 0; }
+
+    .hero{
+      margin-top: 8px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(59,130,246,.18), rgba(34,197,94,.10)),
+        rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:-40px -60px auto auto;
+      width:180px;
+      height:180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(59,130,246,.30), transparent 65%);
+      filter: blur(2px);
+    }
+    .hero-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .hero h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:-0.3px;
+    }
+    .hero p{
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .hero .cta{
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .cta .primary{
+      background: linear-gradient(135deg, rgba(59,130,246,.95), rgba(59,130,246,.72));
+      border: none;
+      color: #071227;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+    }
+    .cta .secondary{
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+    }
+
+    .section{
+      margin-top: 18px;
+    }
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .section-title{
+      margin:0;
+      font-size: 15px;
+      letter-spacing:-0.2px;
+    }
+    .link{
+      color: rgba(232,238,252,.85);
+      font-size: 12px;
+      text-decoration:none;
+      opacity:.9;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+    }
+    .tags{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .tags::-webkit-scrollbar{ display:none; }
+    .tag{
+      white-space:nowrap;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: rgba(232,238,252,.92);
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .tag.active{
+      border-color: rgba(59,130,246,.65);
+      background: rgba(59,130,246,.18);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      box-shadow: 0 10px 24px rgba(0,0,0,.22);
+      cursor:pointer;
+      transition: transform .12s ease;
+    }
+    .card:active{ transform: scale(.99); }
+
+    .thumb{
+      height: 92px;
+      background:
+        radial-gradient(120px 80px at 30% 25%, rgba(59,130,246,.35), transparent 55%),
+        radial-gradient(120px 90px at 80% 30%, rgba(34,197,94,.25), transparent 55%),
+        linear-gradient(135deg, rgba(15,26,46,.8), rgba(13,23,48,.95));
+      position:relative;
+    }
+    .badge{
+      position:absolute;
+      left: 10px;
+      top: 10px;
+      font-size: 11px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.30);
+      border:1px solid rgba(255,255,255,.10);
+      color: rgba(232,238,252,.95);
+      backdrop-filter: blur(6px);
+    }
+    .card-body{
+      padding: 10px 10px 12px;
+    }
+    .card-title{
+      margin:0;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing:-0.2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      min-height: 34px;
+    }
+    .card-meta{
+      margin-top: 8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .pill{
+      padding: 5px 8px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: rgba(232,238,252,.85);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .row{
+      display:flex;
+      gap:12px;
+      padding: 10px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      cursor:pointer;
+    }
+    .row .mini{
+      width: 74px;
+      height: 74px;
+      border-radius: 16px;
+      background:
+        radial-gradient(70px 60px at 25% 25%, rgba(59,130,246,.35), transparent 55%),
+        radial-gradient(70px 60px at 75% 30%, rgba(34,197,94,.25), transparent 55%),
+        rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.08);
+      flex: 0 0 auto;
+    }
+    .row h4{
+      margin:0;
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing:-0.2px;
+      line-height: 1.25;
+    }
+    .row p{
+      margin: 6px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+    .row .row-meta{
+      margin-top: 8px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .more{
+      margin: 14px 0 10px;
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      font-weight: 750;
+      cursor:pointer;
+    }
+
+    /* Bottom Nav */
+    .bottom{
+      position: fixed;
+      left:50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      width: min(520px, calc(100% - 18px));
+      border-radius: 22px;
+      border:1px solid var(--line);
+      background: rgba(11,18,32,.75);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      padding: 8px 10px;
+      z-index: 60;
+    }
+    .tabs{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .tab{
+      flex:1;
+      border:none;
+      background: transparent;
+      color: rgba(232,238,252,.75);
+      padding: 10px 8px;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      user-select:none;
+    }
+    .tab.active{
+      background: rgba(59,130,246,.16);
+      border:1px solid rgba(59,130,246,.25);
+      color: rgba(232,238,252,.95);
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background: rgba(232,238,252,.55);
+    }
+    .tab.active .dot{
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+    }
+
+    /* Desktop polish */
+    @media (min-width: 521px){
+      .content{ padding-left: 0; padding-right: 0; }
+      .topbar-inner{ padding-left: 0; padding-right: 0; }
+      .app{ padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="logo" aria-label="브랜드">
+            <div class="mark">P</div>
+            <div class="brand-text">
+              <p class="brand-title">푸망형 테스트</p>
+              <p class="brand-sub">오늘의 밈 · 성격 · 연애 테스트</p>
+            </div>
+          </div>
+          <div class="chip" id="btnTheme" title="테마 토글">
+            <span style="opacity:.9">✨</span> <span>테마</span>
+          </div>
+        </div>
+
+        <div class="search">
+          <div class="searchbox">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input id="q" type="search" placeholder="테스트 검색 (예: 연애, MBTI, 밈)" autocomplete="off" />
+          </div>
+          <button class="btn" id="btnRandom" type="button">🎲</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="hero" aria-label="오늘의 추천">
+        <div class="hero-top">
+          <div>
+            <h2>오늘 뭐 해볼까?</h2>
+            <p>가볍게 1~2분. 결과 공유하고 친구 반응 보기 😎</p>
+          </div>
+          <span class="pill">NEW</span>
+        </div>
+        <div class="cta">
+          <button class="primary" id="btnStartTop" type="button">추천 테스트 시작</button>
+          <button class="secondary" id="btnShareTop" type="button">공유 링크</button>
+        </div>
+      </section>
+
+      <section class="section" aria-label="태그">
+        <div class="section-head">
+          <h3 class="section-title">카테고리</h3>
+          <a class="link" href="#" id="btnReset">전체</a>
+        </div>
+        <div class="tags" id="tags"></div>
+      </section>
+
+      <section class="section" aria-label="인기 테스트">
+        <div class="section-head">
+          <h3 class="section-title">🔥 인기 테스트</h3>
+          <a class="link" href="#" id="btnPopularMore">더보기</a>
+        </div>
+        <div class="grid" id="popularGrid"></div>
+      </section>
+
+      <section class="section" aria-label="최신 테스트">
+        <div class="section-head">
+          <h3 class="section-title">🆕 최신 업로드</h3>
+          <a class="link" href="#" id="btnLatestMore">더보기</a>
+        </div>
+        <div class="list" id="latestList"></div>
+        <button class="more" id="btnLoadMore" type="button">더 불러오기</button>
+      </section>
+
+      <div style="height: 18px;"></div>
+    </main>
+  </div>
+
+  <nav class="bottom" aria-label="하단 메뉴">
+    <div class="tabs">
+      <button class="tab active" data-tab="home" type="button"><span class="dot"></span>홈</button>
+      <button class="tab" data-tab="rank" type="button"><span class="dot"></span>랭킹</button>
+      <button class="tab" data-tab="make" type="button"><span class="dot"></span>만들기</button>
+      <button class="tab" data-tab="me" type="button"><span class="dot"></span>내정보</button>
+    </div>
+  </nav>
+
+  <script>
+    // ✅ 샘플 데이터(나중에 JSON/DB로 교체하기 쉬움)
+    const TESTS = [
+      { id:1, title:"내 연애가 망하는 이유 한 줄 요약", desc:"선택 10개로 연애 패턴이 딱 나옴", tag:"연애", minutes:2, plays:128430, badge:"🔥 HOT" },
+      { id:2, title:"내 MBTI가 화났을 때 하는 말", desc:"친구들이 제일 웃긴다고 함", tag:"MBTI", minutes:1, plays:95420, badge:"밈" },
+      { id:3, title:"회사에서 나는 어떤 캐릭터?", desc:"팀원들이 보는 나의 포지션", tag:"직장", minutes:2, plays:65110, badge:"추천" },
+      { id:4, title:"나의 숨겨진 T/F 수치", desc:"감정 vs 논리 밸런스 측정", tag:"성격", minutes:2, plays:50122, badge:"NEW" },
+      { id:5, title:"친구가 나를 싫어할 때 나오는 사인", desc:"나만 몰랐던 그 순간", tag:"관계", minutes:2, plays:88912, badge:"🔥" },
+      { id:6, title:"내가 귀여운 이유 테스트", desc:"근거를 데이터로 제시함(진짜임)", tag:"밈", minutes:1, plays:122001, badge:"ㅋㅋ" },
+      { id:7, title:"내가 돈을 못 모으는 이유", desc:"습관 1개만 바꿔도 달라짐", tag:"돈", minutes:3, plays:33010, badge:"실전" },
+      { id:8, title:"나랑 잘 맞는 여행 스타일", desc:"혼행/패키지/즉흥/계획형", tag:"여행", minutes:2, plays:28801, badge:"NEW" },
+      { id:9, title:"내가 먼저 연락 못 하는 이유", desc:"자존심? 불안? 그냥 바쁨?", tag:"연애", minutes:2, plays:71440, badge:"인기" },
+      { id:10, title:"나의 ‘찐’ 스트레스 해소법", desc:"나한테 맞는 방식만 골라줌", tag:"성격", minutes:2, plays:21990, badge:"추천" },
+    ];
+
+    const TAGS = ["연애","MBTI","성격","밈","직장","관계","돈","여행"];
+
+    const state = {
+      tag: null,
+      query: "",
+      latestPage: 1,
+      latestPageSize: 4,
+      theme: "dark"
+    };
+
+    // ---- helpers ----
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const formatPlays = (n) => {
+      if (n >= 1000000) return (n/1000000).toFixed(1) + "M";
+      if (n >= 1000) return (n/1000).toFixed(1) + "K";
+      return String(n);
+    };
+
+    function filteredTests(){
+      let items = [...TESTS];
+
+      if (state.tag) items = items.filter(t => t.tag === state.tag);
+      if (state.query.trim()){
+        const q = state.query.trim().toLowerCase();
+        items = items.filter(t =>
+          t.title.toLowerCase().includes(q) ||
+          t.desc.toLowerCase().includes(q) ||
+          t.tag.toLowerCase().includes(q)
+        );
+      }
+      return items;
+    }
+
+    function renderTags(){
+      const root = $("#tags");
+      root.innerHTML = "";
+      TAGS.forEach(tag => {
+        const el = document.createElement("button");
+        el.className = "tag" + (state.tag === tag ? " active" : "");
+        el.type = "button";
+        el.textContent = "#" + tag;
+        el.onclick = () => {
+          state.tag = (state.tag === tag) ? null : tag;
+          state.latestPage = 1;
+          renderAll();
+        };
+        root.appendChild(el);
+      });
+    }
+
+    function renderPopular(){
+      const root = $("#popularGrid");
+      root.innerHTML = "";
+      const items = filteredTests()
+        .sort((a,b) => b.plays - a.plays)
+        .slice(0, 4);
+
+      items.forEach(t => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.onclick = () => goTest(t);
+
+        card.innerHTML = `
+          <div class="thumb">
+            <div class="badge">${t.badge}</div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">${escapeHtml(t.title)}</h4>
+            <div class="card-meta">
+              <span>${t.tag}</span>
+              <span class="pill">${t.minutes}분 · ${formatPlays(t.plays)}회</span>
+            </div>
+          </div>
+        `;
+        root.appendChild(card);
+      });
+    }
+
+    function renderLatest(){
+      const root = $("#latestList");
+      root.innerHTML = "";
+
+      const items = filteredTests()
+        // 최신은 여기선 id 큰 게 최신이라고 가정
+        .sort((a,b) => b.id - a.id);
+
+      const take = state.latestPage * state.latestPageSize;
+      const pageItems = items.slice(0, take);
+
+      pageItems.forEach(t => {
+        const row = document.createElement("article");
+        row.className = "row";
+        row.onclick = () => goTest(t);
+
+        row.innerHTML = `
+          <div class="mini"></div>
+          <div style="min-width:0; flex:1;">
+            <h4>${escapeHtml(t.title)}</h4>
+            <p>${escapeHtml(t.desc)}</p>
+            <div class="row-meta">
+              <span class="pill">${t.tag}</span>
+              <span class="pill">${t.minutes}분</span>
+              <span class="pill">${formatPlays(t.plays)}회</span>
+            </div>
+          </div>
+        `;
+        root.appendChild(row);
+      });
+
+      const hasMore = pageItems.length < items.length;
+      $("#btnLoadMore").style.display = hasMore ? "block" : "none";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // ---- navigation (지금은 데모: 실제론 /t/slug 라우팅으로 연결하면 됨) ----
+    function goTest(test){
+      // ✅ 나중에 여기만 바꾸면 됨:
+      // location.href = `/t/${test.slug}`;
+      alert(`테스트 이동: "${test.title}"\\n(여기는 다음 단계에서 질문/결과 페이지로 연결하면 돼)`);
+    }
+
+    // ---- events ----
+    $("#q").addEventListener("input", (e) => {
+      state.query = e.target.value;
+      state.latestPage = 1;
+      renderAll();
+    });
+
+    $("#btnLoadMore").onclick = () => {
+      state.latestPage += 1;
+      renderLatest();
+    };
+
+    $("#btnReset").onclick = (e) => {
+      e.preventDefault();
+      state.tag = null;
+      state.query = "";
+      $("#q").value = "";
+      state.latestPage = 1;
+      renderAll();
+    };
+
+    $("#btnRandom").onclick = () => {
+      const items = filteredTests();
+      const pick = items[Math.floor(Math.random()*items.length)] || TESTS[0];
+      goTest(pick);
+    };
+
+    $("#btnStartTop").onclick = () => {
+      const items = filteredTests().sort((a,b) => b.plays - a.plays);
+      goTest(items[0] || TESTS[0]);
+    };
+
+    $("#btnShareTop").onclick = async () => {
+      const shareData = {
+        title: "푸망형 테스트",
+        text: "오늘의 밈/성격 테스트 하러 가자!",
+        url: location.href
+      };
+      try{
+        if (navigator.share) await navigator.share(shareData);
+        else {
+          await navigator.clipboard.writeText(shareData.url);
+          alert("링크를 클립보드에 복사했어!");
+        }
+      } catch(e){
+        // user cancelled - ignore
+      }
+    };
+
+    // bottom tabs demo
+    $$(".tab").forEach(btn => {
+      btn.onclick = () => {
+        $$(".tab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const tab = btn.dataset.tab;
+        if (tab !== "home") alert(`"${tab}" 탭은 다음 단계에서 페이지 만들면 돼`);
+      };
+    });
+
+    // Theme toggle (간단 데모)
+    $("#btnTheme").onclick = () => {
+      // 지금은 다크 고정 디자인이지만, 토글 훅만 만들어둠
+      alert("테마 토글은 다음 단계에서 라이트 테마 추가하면 돼!");
+    };
+
+    function renderAll(){
+      renderTags();
+      renderPopular();
+      renderLatest();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
